@@ -1,0 +1,11 @@
+# secrets: real env files never go in git
+.env
+.env.*
+!.env.example
+
+# runtime data (databases, uploads, etc.)
+**/data/
+
+# editor/OS junk
+.DS_Store
+*.swp
