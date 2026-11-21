@@ -1,0 +1,46 @@
+{
+  "default_mode": "mention",
+  "hackclub": {
+    "base_url": "https://ai.hackclub.com/proxy/v1",
+    "request_timeout_seconds": 60,
+    "image_endpoint": "/images/generations"
+  },
+  "models": {
+    "mention": ["PRIMARY_MODEL", "FALLBACK_MODEL_1", "FALLBACK_MODEL_2"],
+    "chat": ["CHEAP_MODEL", "CHEAP_FALLBACK"],
+    "vision": [],
+    "low_budget": ["LOW_BUDGET_MODEL", "LOW_BUDGET_FALLBACK"],
+    "image": ["IMAGE_MODEL", "IMAGE_FALLBACK"]
+  },
+  "chat_mode": {
+    "chance": 0.05,
+    "channel_cooldown_seconds": 30
+  },
+  "context": {
+    "messages": 10,
+    "max_chars_per_message": 1000
+  },
+  "budget": {
+    "daily_token_threshold": 500000,
+    "timezone": "UTC",
+    "image_token_cost": 2000
+  },
+  "triggers": {
+    "search": ["search for"],
+    "image": ["generate an image"]
+  },
+  "search": {
+    "searxng_url": "http://searxng:8080",
+    "max_results": 5,
+    "timeout_seconds": 10,
+    "max_snippet_chars": 300
+  },
+  "limits": {
+    "max_output_tokens": 800,
+    "max_images_per_message": 4,
+    "max_image_bytes": 8388608,
+    "user_cooldown_seconds": 3,
+    "max_instruction_chars": 4000,
+    "max_concurrent_requests": 4
+  }
+}

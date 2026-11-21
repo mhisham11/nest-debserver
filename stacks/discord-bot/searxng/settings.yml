@@ -1,0 +1,29 @@
+use_default_settings:
+  engines:
+    keep_only:
+      - duckduckgo
+      - brave
+      - wikipedia
+      - bing
+
+general:
+  instance_name: "Bot Internal SearXNG"
+  enable_metrics: false
+
+search:
+  safe_search: 1
+  autocomplete: ""
+  formats:
+    - html
+    - json
+
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  # Replace with output of: openssl rand -hex 32
+  secret_key: "CHANGE_ME_TO_A_RANDOM_64_CHAR_HEX_STRING_BEFORE_RUNNING"
+  limiter: false
+  image_proxy: false
+
+ui:
+  static_use_hash: true

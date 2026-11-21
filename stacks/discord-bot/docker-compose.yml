@@ -1,0 +1,40 @@
+services:
+  searxng:
+    image: searxng/searxng:latest
+    container_name: ai_bot_searxng
+    restart: unless-stopped
+    mem_limit: 512m
+    volumes:
+      - ./searxng:/etc/searxng:rw
+    environment:
+      - SEARXNG_BASE_URL=http://searxng:8080/
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:8080/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  bot:
+    build: .
+    container_name: ai_discord_bot
+    restart: unless-stopped
+    mem_limit: 512m
+    depends_on:
+      searxng:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data:rw
+      - ./config.json:/app/config.json:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
