@@ -4,7 +4,7 @@ import io
 import logging
 import discord
 from PIL import Image
-from bot.config import ConfigManager
+from bot.config import AppConfig, ConfigManager
 
 logger = logging.getLogger("bot.images")
 
@@ -37,9 +37,10 @@ def _downscale_and_encode(raw_bytes: bytes) -> str:
 
 async def extract_image_data_urls(
     attachments: list[discord.Attachment],
-    config_mgr: ConfigManager,
+    config: AppConfig | ConfigManager,
 ) -> list[str]:
-    limits = config_mgr.get().limits
+    cfg = config.get() if isinstance(config, ConfigManager) else config
+    limits = cfg.limits
     image_attachments = [
         a
         for a in attachments

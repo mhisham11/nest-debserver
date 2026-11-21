@@ -6,11 +6,24 @@
     "image_endpoint": "/images/generations"
   },
   "models": {
-    "mention": ["anthropic/claude-haiku-5.5", "google/gemma-4-26b-a4b-it", "google/gemma-3-27b-it"],
-    "chat": ["ganthropic/claude-haiku-5.5", "google/gemma-3-27b-it"],
+    "mention": [
+      "anthropic/claude-haiku-5.5",
+      "google/gemma-4-26b-a4b-it",
+      "google/gemma-3-27b-it"
+    ],
+    "chat": [
+      "anthropic/claude-haiku-5.5",
+      "google/gemma-3-27b-it"
+    ],
     "vision": [],
-    "low_budget": ["google/gemma-4-26b-a4b-it", "google/gemma-3-27b-it"],
-    "image": ["google/gemini-3.1-flash-lite-image", "google/gemini-2.5-flash-image"]
+    "low_budget": [
+      "google/gemma-4-26b-a4b-it",
+      "google/gemma-3-27b-it"
+    ],
+    "image": [
+      "google/gemini-3.1-flash-lite-image",
+      "google/gemini-2.5-flash-image"
+    ]
   },
   "chat_mode": {
     "chance": 0.1,
@@ -26,8 +39,12 @@
     "image_token_cost": 2000
   },
   "triggers": {
-    "search": ["search for"],
-    "image": ["generate an image"]
+    "search": [
+      "search for"
+    ],
+    "image": [
+      "generate an image"
+    ]
   },
   "search": {
     "searxng_url": "http://searxng:8080",
