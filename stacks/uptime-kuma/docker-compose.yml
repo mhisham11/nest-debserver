@@ -1,0 +1,15 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:${KUMA_TAG:-2}
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./data:/app/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
