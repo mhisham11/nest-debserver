@@ -6,18 +6,18 @@
     "image_endpoint": "/images/generations"
   },
   "models": {
-    "mention": ["PRIMARY_MODEL", "FALLBACK_MODEL_1", "FALLBACK_MODEL_2"],
-    "chat": ["CHEAP_MODEL", "CHEAP_FALLBACK"],
+    "mention": ["anthropic/claude-haiku-5.5", "google/gemma-4-26b-a4b-it", "google/gemma-3-27b-it"],
+    "chat": ["ganthropic/claude-haiku-5.5", "google/gemma-3-27b-it"],
     "vision": [],
-    "low_budget": ["LOW_BUDGET_MODEL", "LOW_BUDGET_FALLBACK"],
-    "image": ["IMAGE_MODEL", "IMAGE_FALLBACK"]
+    "low_budget": ["google/gemma-4-26b-a4b-it", "google/gemma-3-27b-it"],
+    "image": ["google/gemini-3.1-flash-lite-image", "google/gemini-3.1-flash-lite-image"]
   },
   "chat_mode": {
-    "chance": 0.05,
-    "channel_cooldown_seconds": 30
+    "chance": 0.1,
+    "channel_cooldown_seconds": 1
   },
   "context": {
-    "messages": 10,
+    "messages": 64,
     "max_chars_per_message": 1000
   },
   "budget": {
