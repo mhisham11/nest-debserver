@@ -33,6 +33,9 @@ class SearXNGClient:
             logger.error("SearXNG search failed: %s", type(exc).__name__)
             return None
 
+        if not isinstance(data, dict):
+            return None
+
         raw_results = data.get("results")
         if not isinstance(raw_results, list):
             return []

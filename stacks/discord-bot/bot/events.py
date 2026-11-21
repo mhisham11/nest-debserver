@@ -87,7 +87,7 @@ class MessageHandler:
         limit: int,
         max_chars: int,
     ) -> list[dict[str, Any]]:
-        if limit <= 0:
+        if limit <= 0 or message.guild is None:
             return []
 
         history: list[discord.Message] = []
@@ -126,6 +126,7 @@ class MessageHandler:
         safe_text = redact_secrets(text, self.secrets)
         chunks = split_discord_message(safe_text)
         no_pings = discord.AllowedMentions.none()
+        guild_id = message.guild.id if message.guild else 0
 
         for idx, chunk in enumerate(chunks):
             try:
@@ -149,7 +150,7 @@ class MessageHandler:
                         allowed_mentions=no_pings,
                     )
             except Exception as exc:
-                logger.error("Failed to send message in guild %d: %s", message.guild.id, type(exc).__name__)
+                logger.error("Failed to send message in guild %d: %s", guild_id, type(exc).__name__)
                 break
 
     async def handle_message(self, message: discord.Message) -> None:
