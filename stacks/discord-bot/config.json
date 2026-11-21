@@ -10,7 +10,7 @@
     "chat": ["ganthropic/claude-haiku-5.5", "google/gemma-3-27b-it"],
     "vision": [],
     "low_budget": ["google/gemma-4-26b-a4b-it", "google/gemma-3-27b-it"],
-    "image": ["google/gemini-3.1-flash-lite-image", "google/gemini-3.1-flash-lite-image"]
+    "image": ["google/gemini-3.1-flash-lite-image", "google/gemini-2.5-flash-image"]
   },
   "chat_mode": {
     "chance": 0.1,
