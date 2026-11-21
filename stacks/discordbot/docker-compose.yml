@@ -1,0 +1,43 @@
+services:
+  discordbot:
+    build: .
+    container_name: discordbot
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      CONFIG_FILE: data/config.json
+      INSTRUCTIONS_FILE: data/instructions.txt
+      SEARXNG_URL: http://searxng:8080
+    volumes:
+      # Mount the directory, not the file: the bot saves config via os.replace(),
+      # which fails on a single-file bind mount.
+      - ./data:/app/data
+    depends_on:
+      - searxng
+    # hardening
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    logging: &logging
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  searxng:
+    image: searxng/searxng:latest
+    restart: unless-stopped
+    env_file: searxng.env          # kept separate so the bot never sees SEARXNG_SECRET
+    volumes:
+      - ./searxng:/etc/searxng
+      - searxng-cache:/var/cache/searxng
+    # No "ports:" on purpose: only reachable from the bot over the compose network.
+    cap_drop: [ALL]
+    cap_add: [CHOWN, SETGID, SETUID]
+    logging: *logging
+
+volumes:
+  searxng-cache:
