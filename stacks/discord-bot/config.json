@@ -27,8 +27,7 @@
   },
   "chat_mode": {
     "chance": 0.1,
-    "channel_cooldown_seconds": 1,
-    "servers": {}
+    "channel_cooldown_seconds": 1
   },
   "context": {
     "messages": 64,

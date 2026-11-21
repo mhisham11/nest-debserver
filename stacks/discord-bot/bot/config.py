@@ -23,27 +23,9 @@ class ModelsConfig(BaseModel):
     image: list[str] = Field(min_length=1)
 
 
-class ServerChatModeOverride(BaseModel):
-    chance: float | None = Field(default=None, ge=0.0, le=1.0)
-    channel_cooldown_seconds: float | None = Field(default=None, ge=0.0)
-
-
 class ChatModeConfig(BaseModel):
     chance: float = Field(ge=0.0, le=1.0)
     channel_cooldown_seconds: float = Field(ge=0.0)
-    servers: dict[str, ServerChatModeOverride] = Field(default_factory=dict)
-
-    def get_for_guild(self, guild_id: int) -> tuple[float, float]:
-        override = self.servers.get(str(guild_id))
-        if override is None:
-            return self.chance, self.channel_cooldown_seconds
-        chance = override.chance if override.chance is not None else self.chance
-        cooldown = (
-            override.channel_cooldown_seconds
-            if override.channel_cooldown_seconds is not None
-            else self.channel_cooldown_seconds
-        )
-        return chance, cooldown
 
 
 class ContextConfig(BaseModel):
