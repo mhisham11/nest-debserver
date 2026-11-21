@@ -172,10 +172,11 @@ class MessageHandler:
             if mode == "mention":
                 return
             if mode == "chat":
-                if random.random() >= cfg.chat_mode.chance:
+                chime_chance, channel_cooldown = cfg.chat_mode.get_for_guild(guild_id)
+                if random.random() >= chime_chance:
                     return
                 if not self._check_channel_cooldown(
-                    message.channel.id, cfg.chat_mode.channel_cooldown_seconds
+                    message.channel.id, channel_cooldown
                 ):
                     return
                 is_random_chime = True
@@ -333,16 +334,17 @@ class MessageHandler:
                 search_block = wrap_search_results(
                     f"No web results found for query: {search_query}"
                 )
+                search_failed_notice = (
+                    f"[System Note: Live web search ran for '{search_query}' but returned 0 results. "
+                    "Explicitly tell the user that web search returned no results rather than guessing live facts.]"
+                )
             else:
                 formatted_items = []
                 for idx, r in enumerate(results, start=1):
                     formatted_items.append(
                         f"[{idx}] Title: {r.title}\nURL: {r.url}\nSnippet: {r.snippet}"
                     )
-                search_block = (
-                    wrap_search_results("\n\n".join(formatted_items))
-                    + "\n[Instruction: Answer the user's query using the search results above and cite your sources by URL.]"
-                )
+                search_block = wrap_search_results("\n\n".join(formatted_items))
 
         # Build message chain
         personality = self.instructions.get_instructions(guild_id, message.guild.name)
