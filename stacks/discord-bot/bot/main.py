@@ -99,8 +99,9 @@ class AIDiscordBot(discord.Client):
     async def on_message(self, message: discord.Message) -> None:
         try:
             await self.handler.handle_message(message)
-        except Exception:
-            logger.exception("Unhandled exception in on_message (guild=%s)", getattr(message.guild, "id", None))
+        except Exception as exc:
+            logger.error("Unhandled exception in on_message: %s", type(exc).__name__)
+
 
 async def main() -> None:
     discord_token = os.environ.get("DISCORD_TOKEN", "").strip()
