@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cambridge IGCSE Physics (0625) — Complete Equation Sheet &amp; Study Dashboard</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+      --dur-fast: 180ms;
+      --dur-base: 260ms;
+    }
+
+    /* Unified Theme & Surface Transitions */
+    body,
+    header,
+    footer,
+    .toolbar-surface {
+      transition:
+        background-color var(--dur-base) var(--ease-smooth),
+        border-color var(--dur-base) var(--ease-smooth),
+        color var(--dur-base) var(--ease-smooth);
+    }
+
+    /* Uniform Card Elevation & Border Transitions (Zero Stagger / Zero Flash) */
+    .equation-card {
+      transition:
+        transform var(--dur-fast) var(--ease-smooth),
+        box-shadow var(--dur-fast) var(--ease-smooth),
+        background-color var(--dur-base) var(--ease-smooth),
+        border-color var(--dur-base) var(--ease-smooth);
+      will-change: transform;
+    }
+
+    .equation-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Unified Interactive Pill & Button Transitions */
+    .ui-pill {
+      transition:
+        background-color var(--dur-fast) var(--ease-smooth),
+        color var(--dur-fast) var(--ease-smooth),
+        border-color var(--dur-fast) var(--ease-smooth),
+        box-shadow var(--dur-fast) var(--ease-smooth);
+    }
+
+    /* Mathematical Fraction Styling */
+    .math-expr {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      text-align: center;
+      line-height: 1.15;
+      padding: 0 0.2rem;
+    }
+
+    .frac .num {
+      border-bottom: 2px solid currentColor;
+      padding: 0 0.3rem 0.15rem 0.3rem;
+      width: 100%;
+    }
+
+    .frac .den {
+      padding: 0.15rem 0.3rem 0 0.3rem;
+      width: 100%;
+    }
+
+    /* Hide scrollbars cleanly for horizontal pill nav */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Study Mode Blur & Smooth Hover/Click Reveal */
+    .study-masked .formula-content {
+      filter: blur(8px);
+      opacity: 0.3;
+      user-select: none;
+      transition:
+        filter var(--dur-base) var(--ease-smooth),
+        opacity var(--dur-base) var(--ease-smooth);
+    }
+
+    .study-masked .study-overlay {
+      opacity: 1;
+      pointer-events: auto;
+      transition: opacity var(--dur-fast) var(--ease-smooth);
+    }
+
+    .study-masked:hover .formula-content,
+    .study-masked:focus-within .formula-content,
+    .study-revealed .formula-content {
+      filter: blur(0px);
+      opacity: 1;
+      user-select: auto;
+    }
+
+    .study-masked:hover .study-overlay,
+    .study-masked:focus-within .study-overlay,
+    .study-revealed .study-overlay {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Interactive Formula Triangle Sectors */
+    .tri-sector {
+      cursor: pointer;
+      transition: fill var(--dur-fast) var(--ease-smooth);
+    }
+
+    /* Reduced Motion Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .equation-card:hover {
+        transform: none;
+      }
+    }
+
+    /* Print Optimization */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: #ffffff !important;
+        color: #0f172a !important;
+      }
+      .equation-card {
+        break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #cbd5e1 !important;
+        transform: none !important;
+      }
+      .study-masked .formula-content {
+        filter: none !important;
+        opacity: 1 !important;
+      }
+      .study-overlay {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
+
+  <!-- Top Hero Header -->
+  <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 relative overflow-hidden">
+    <!-- Subtle architectural dot matrix -->
+    <div class="absolute inset-0 opacity-[0.03] dark:opacity-[0.06] pointer-events-none"
+         style="background-image: radial-gradient(#3b82f6 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 relative">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <!-- Title & Syllabus Badges -->
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-2.5">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-blue-600 text-white shadow-sm">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+              </svg>
+              Cambridge IGCSE™
+            </span>
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+              Syllabus Code: 0625
+            </span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+              <span class="font-bold">(E)</span> = Extended Only
+            </span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
+              2025–2026 Paper 4 Verified
+            </span>
+          </div>
+
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            Physics Equation List &amp; Visual Formula Sheet
+          </h1>
+          <p class="mt-1.5 text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl">
+            All 39 syllabus &amp; Paper 4 marking-scheme equations with SI units, clickable Formula Triangles, topic diagrams, and active-recall Study Mode.
+          </p>
+        </div>
+
+        <!-- Stats Summary & Utility Buttons -->
+        <div class="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end gap-4">
+          <div class="flex items-center gap-2 no-print">
+            <button id="themeToggle" type="button"
+              class="ui-pill inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+              <svg class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+              </svg>
+              <svg class="w-4 h-4 block dark:hidden text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+              </svg>
+              <span id="themeLabel">Dark Mode</span>
+            </button>
+
+            <button onclick="window.print()" type="button"
+              class="ui-pill inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
+              </svg>
+              Print Sheet
+            </button>
+          </div>
+
+          <!-- Quick Stats Pills -->
+          <div class="grid grid-cols-4 gap-2 sm:gap-3 w-full sm:w-auto">
+            <div class="px-3 py-2 rounded-xl bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 text-center">
+              <div class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">39</div>
+              <div class="text-[11px] font-medium text-slate-500 dark:text-slate-400">Equations</div>
+            </div>
+            <div class="px-3 py-2 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60 text-center">
+              <div class="text-lg sm:text-xl font-extrabold text-emerald-700 dark:text-emerald-400">21</div>
+              <div class="text-[11px] font-medium text-emerald-600 dark:text-emerald-300">Core</div>
+            </div>
+            <div class="px-3 py-2 rounded-xl bg-purple-50/80 dark:bg-purple-950/40 border border-purple-200/80 dark:border-purple-800/60 text-center">
+              <div class="text-lg sm:text-xl font-extrabold text-purple-700 dark:text-purple-400">18</div>
+              <div class="text-[11px] font-medium text-purple-600 dark:text-purple-300">Extended (E)</div>
+            </div>
+            <div class="px-3 py-2 rounded-xl bg-sky-50/80 dark:bg-sky-950/40 border border-sky-200/80 dark:border-sky-800/60 text-center">
+              <div class="text-lg sm:text-xl font-extrabold text-sky-700 dark:text-sky-400">13</div>
+              <div class="text-[11px] font-medium text-sky-600 dark:text-sky-300">Paper 4 Added</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sticky Control & Filter Toolbar -->
+  <div class="toolbar-surface sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 space-y-3">
+      <!-- Top Row: Syllabus Tier Filter, Search Bar, Study Mode Toggle -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <!-- Syllabus Level Filter Pills -->
+        <div class="inline-flex flex-wrap p-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 self-start gap-1">
+          <button data-filter="all" class="filter-btn ui-pill active px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm">
+            All (39)
+          </button>
+          <button data-filter="core" class="filter-btn ui-pill px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+            Core (21)
+          </button>
+          <button data-filter="extended" class="filter-btn ui-pill px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+            Extended (E) (18)
+          </button>
+          <button data-filter="paper4" class="filter-btn ui-pill px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+            Paper 4 Additions (13)
+          </button>
+        </div>
+
+        <!-- Search & Study Mode -->
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5 flex-1 lg:max-w-xl">
+          <!-- Search Box -->
+          <div class="relative flex-1 min-w-[210px]">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            <input id="searchInput" type="text" placeholder="Search formula, symbol (e.g. ½mv², ρ, λ, H₀), unit, or Q#..."
+              class="ui-pill w-full pl-9 pr-8 py-2 rounded-xl text-xs sm:text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button id="clearSearch" type="button" aria-label="Clear search" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Study Mode Toggle -->
+          <button id="studyModeToggle" type="button"
+            class="ui-pill inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border whitespace-nowrap bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/50 dark:hover:bg-amber-900/60 dark:text-amber-300 dark:border-amber-700">
+            <svg id="eyeOffIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+            </svg>
+            <svg id="eyeOnIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span id="studyModeText">Study Mode: Off</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom Row: Topic Quick-Jump Pills -->
+      <div id="topicNav" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Study Mode Helper Banner -->
+  <div id="studyBanner" class="hidden bg-amber-500 text-white text-xs sm:text-sm font-medium py-2 px-4 text-center shadow-inner no-print">
+    <span>Active Recall Mode: Hover over any card to peek, or click to lock it revealed.</span>
+    <button id="resetPeeksBtn" type="button" class="underline font-bold hover:text-amber-100 ml-2">Re-hide All</button>
+  </div>
+
+  <!-- Main Content Container -->
+  <main id="topicsContainer" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 flex-1 w-full">
+    <!-- Rendered dynamically -->
+  </main>
+
+  <!-- Empty Search State -->
+  <div id="emptyState" class="hidden max-w-md mx-auto text-center py-16 px-4">
+    <div class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center mx-auto mb-4">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+      </svg>
+    </div>
+    <h3 class="text-lg font-bold text-slate-900 dark:text-white">No matching equations found</h3>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Try searching for another symbol, unit, or reset your active filters.</p>
+    <button id="resetAllFilters" type="button" class="ui-pill mt-4 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold">
+      Reset Filters
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+      <div>
+        <span class="font-semibold text-slate-700 dark:text-slate-300">Cambridge IGCSE Physics (0625)</span> — Complete Syllabus + 2025–2026 Paper 4 Equation Reference
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        <span class="inline-flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Core Syllabus
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> Extended (E) Only
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> Paper 4 Exam Addition
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic & Complete 40-Card Dataset -->
+  <script>
+    /**
+     * Color theme tokens mapped per topic for clear visual organization.
+     */
+    const THEME_STYLES = {
+      blue: {
+        dot: 'bg-blue-500',
+        borderTop: 'border-t-blue-500',
+        badgeBg: 'bg-blue-50 dark:bg-blue-950/60',
+        badgeText: 'text-blue-700 dark:text-blue-300',
+        badgeBorder: 'border-blue-200 dark:border-blue-800',
+        formulaBg: 'bg-blue-50/70 dark:bg-blue-950/40',
+        formulaText: 'text-blue-950 dark:text-blue-100',
+        iconBg: 'bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-300',
+        accentHex: '#3b82f6',
+      },
+      indigo: {
+        dot: 'bg-indigo-500',
+        borderTop: 'border-t-indigo-500',
+        badgeBg: 'bg-indigo-50 dark:bg-indigo-950/60',
+        badgeText: 'text-indigo-700 dark:text-indigo-300',
+        badgeBorder: 'border-indigo-200 dark:border-indigo-800',
+        formulaBg: 'bg-indigo-50/70 dark:bg-indigo-950/40',
+        formulaText: 'text-indigo-950 dark:text-indigo-100',
+        iconBg: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-300',
+        accentHex: '#6366f1',
+      },
+      amber: {
+        dot: 'bg-amber-500',
+        borderTop: 'border-t-amber-500',
+        badgeBg: 'bg-amber-50 dark:bg-amber-950/60',
+        badgeText: 'text-amber-800 dark:text-amber-300',
+        badgeBorder: 'border-amber-200 dark:border-amber-800',
+        formulaBg: 'bg-amber-50/70 dark:bg-amber-950/40',
+        formulaText: 'text-amber-950 dark:text-amber-100',
+        iconBg: 'bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-300',
+        accentHex: '#f59e0b',
+      },
+      teal: {
+        dot: 'bg-teal-500',
+        borderTop: 'border-t-teal-500',
+        badgeBg: 'bg-teal-50 dark:bg-teal-950/60',
+        badgeText: 'text-teal-700 dark:text-teal-300',
+        badgeBorder: 'border-teal-200 dark:border-teal-800',
+        formulaBg: 'bg-teal-50/70 dark:bg-teal-950/40',
+        formulaText: 'text-teal-950 dark:text-teal-100',
+        iconBg: 'bg-teal-100 text-teal-600 dark:bg-teal-900/50 dark:text-teal-300',
+        accentHex: '#14b8a6',
+      },
+      rose: {
+        dot: 'bg-rose-500',
+        borderTop: 'border-t-rose-500',
+        badgeBg: 'bg-rose-50 dark:bg-rose-950/60',
+        badgeText: 'text-rose-700 dark:text-rose-300',
+        badgeBorder: 'border-rose-200 dark:border-rose-800',
+        formulaBg: 'bg-rose-50/70 dark:bg-rose-950/40',
+        formulaText: 'text-rose-950 dark:text-rose-100',
+        iconBg: 'bg-rose-100 text-rose-600 dark:bg-rose-900/50 dark:text-rose-300',
+        accentHex: '#f43f5e',
+      },
+      sky: {
+        dot: 'bg-sky-500',
+        borderTop: 'border-t-sky-500',
+        badgeBg: 'bg-sky-50 dark:bg-sky-950/60',
+        badgeText: 'text-sky-700 dark:text-sky-300',
+        badgeBorder: 'border-sky-200 dark:border-sky-800',
+        formulaBg: 'bg-sky-50/70 dark:bg-sky-950/40',
+        formulaText: 'text-sky-950 dark:text-sky-100',
+        iconBg: 'bg-sky-100 text-sky-600 dark:bg-sky-900/50 dark:text-sky-300',
+        accentHex: '#0ea5e9',
+      },
+      emerald: {
+        dot: 'bg-emerald-500',
+        borderTop: 'border-t-emerald-500',
+        badgeBg: 'bg-emerald-50 dark:bg-emerald-950/60',
+        badgeText: 'text-emerald-700 dark:text-emerald-300',
+        badgeBorder: 'border-emerald-200 dark:border-emerald-800',
+        formulaBg: 'bg-emerald-50/70 dark:bg-emerald-950/40',
+        formulaText: 'text-emerald-950 dark:text-emerald-100',
+        iconBg: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-300',
+        accentHex: '#10b981',
+      },
+      violet: {
+        dot: 'bg-violet-500',
+        borderTop: 'border-t-violet-500',
+        badgeBg: 'bg-violet-50 dark:bg-violet-950/60',
+        badgeText: 'text-violet-700 dark:text-violet-300',
+        badgeBorder: 'border-violet-200 dark:border-violet-800',
+        formulaBg: 'bg-violet-50/70 dark:bg-violet-950/40',
+        formulaText: 'text-violet-950 dark:text-violet-100',
+        iconBg: 'bg-violet-100 text-violet-600 dark:bg-violet-900/50 dark:text-violet-300',
+        accentHex: '#8b5cf6',
+      },
+    };
+
+    /**
+     * Generates an interactive SVG Formula Triangle for 3-variable multiplicative relationships (Top = Left × Right).
+     * Clicking any variable highlights its rearranged formula directly underneath the triangle.
+     */
+    function makeInteractiveTriangle(eqId, top, left, right, colorHex) {
+      return `
+        <div class="flex flex-col items-center shrink-0" onclick="event.stopPropagation()" title="Click a symbol to rearrange the formula">
+          <svg width="82" height="68" viewBox="0 0 88 74" class="overflow-visible select-none">
+            <!-- Top Sector -->
+            <polygon points="44,4 65,39 23,39" fill="transparent" class="tri-sector"
+              onmouseover="this.style.fill='${colorHex}26'" onmouseout="this.style.fill='transparent'"
+              onclick="selectTriangleVar('${eqId}', '${top}', '${top} = ${left} × ${right}')" />
+            <!-- Bottom-Left Sector -->
+            <polygon points="23,39 44,39 44,70 4,70" fill="transparent" class="tri-sector"
+              onmouseover="this.style.fill='${colorHex}26'" onmouseout="this.style.fill='transparent'"
+              onclick="selectTriangleVar('${eqId}', '${left}', '${left} = ${top} ÷ ${right}')" />
+            <!-- Bottom-Right Sector -->
+            <polygon points="44,39 65,39 84,70 44,70" fill="transparent" class="tri-sector"
+              onmouseover="this.style.fill='${colorHex}26'" onmouseout="this.style.fill='transparent'"
+              onclick="selectTriangleVar('${eqId}', '${right}', '${right} = ${top} ÷ ${left}')" />
+
+            <!-- Triangle Outline & Dividers -->
+            <polygon points="44,4 84,70 4,70" fill="none" stroke="${colorHex}" stroke-width="2" stroke-linejoin="round" pointer-events="none" />
+            <line x1="23" y1="39" x2="65" y2="39" stroke="${colorHex}" stroke-width="1.7" pointer-events="none" />
+            <line x1="44" y1="39" x2="44" y2="70" stroke="${colorHex}" stroke-width="1.7" pointer-events="none" />
+
+            <!-- Symbols -->
+            <text x="44" y="30" text-anchor="middle" fill="currentColor" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12" pointer-events="none">${top}</text>
+            <text x="27" y="60" text-anchor="middle" fill="currentColor" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12" pointer-events="none">${left}</text>
+            <text x="44" y="59" text-anchor="middle" fill="${colorHex}" font-family="Inter, sans-serif" font-weight="800" font-size="10" pointer-events="none">×</text>
+            <text x="61" y="60" text-anchor="middle" fill="currentColor" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12" pointer-events="none">${right}</text>
+          </svg>
+          <span id="tri-readout-${eqId}" class="text-[10px] font-mono font-bold tracking-tight text-slate-500 dark:text-slate-400 mt-0.5 text-center whitespace-nowrap">
+            Tap symbol
+          </span>
+        </div>
+      `;
+    }
+
+    /**
+     * Updates the interactive triangle readout when a user clicks a variable.
+     */
+    window.selectTriangleVar = function (eqId, symbol, expression) {
+      const el = document.getElementById(`tri-readout-${eqId}`);
+      if (el) {
+        el.textContent = expression;
+        el.classList.remove('text-slate-500', 'dark:text-slate-400');
+        el.classList.add('text-blue-600', 'dark:text-blue-300');
+      }
+    };
+
+    /**
+     * Complete 40-Card Dataset (39 Unique Equations + 1 Conceptual Card)
+     */
+    const SYLLABUS_TOPICS = [
+      {
+        id: 'topic-1',
+        number: '1',
+        title: 'DESCRIBING MOTION',
+        shortTitle: '1. Motion',
+        theme: 'blue',
+        icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>`,
+        items: [
+          {
+            id: 'eq-1',
+            num: 1,
+            name: 'Speed',
+            extended: false,
+            paper4: null,
+            rawText: 'v = s / t',
+            formulaHtml: `<span class="math-expr text-lg"><span>v =</span><span class="frac"><span class="num">s</span><span class="den">t</span></span></span>`,
+            unit: 'm/s',
+            use: 'Calculates average speed from distance (s) and time (t); equals the gradient of a distance–time graph.',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-1', 's', 'v', 't', hex),
+          },
+          {
+            id: 'eq-2',
+            num: 2,
+            name: 'Acceleration',
+            extended: true,
+            paper4: null,
+            rawText: 'a = (v - u) / t Δv / Δt',
+            formulaHtml: `<span class="math-expr text-lg"><span>a =</span><span class="frac"><span class="num">v − u</span><span class="den">t</span></span><span class="text-xs opacity-75 ml-1">(Δv / Δt)</span></span>`,
+            unit: 'm/s²',
+            use: 'Calculates acceleration from initial speed (u), final speed (v), and time (t); equals the gradient of a speed–time graph.',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Gradient of Speed-Time Graph">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <line x1="14" y1="60" x2="80" y2="60" stroke="currentColor" stroke-opacity="0.35" stroke-width="2"/>
+                  <line x1="14" y1="10" x2="14" y2="60" stroke="currentColor" stroke-opacity="0.35" stroke-width="2"/>
+                  <line x1="18" y1="50" x2="74" y2="16" stroke="${hex}" stroke-width="2.4" stroke-linecap="round"/>
+                  <circle cx="18" cy="50" r="3" fill="${hex}"/>
+                  <circle cx="74" cy="16" r="3" fill="${hex}"/>
+                  <text x="8" y="52" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">u</text>
+                  <text x="8" y="20" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">v</text>
+                  <text x="46" y="71" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">t</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">v–t Gradient</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-3',
+            num: 3,
+            name: 'Average Speed in Uniform Acceleration',
+            extended: false,
+            paper4: 'Paper 4 Q31/Q47',
+            rawText: 'v_avg = (u + v) / 2 s = 1/2 (u + v) t',
+            formulaHtml: `<span class="math-expr text-base sm:text-lg"><span>v<sub>avg</sub> =</span><span class="frac"><span class="num">u + v</span><span class="den">2</span></span><span class="text-xs opacity-80 ml-1">[s = ½(u + v)t]</span></span>`,
+            unit: 'm/s',
+            use: 'Finds average speed or distance travelled (s) during uniform acceleration or deceleration.',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Midpoint of Uniform Acceleration">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <line x1="14" y1="60" x2="80" y2="60" stroke="currentColor" stroke-opacity="0.35" stroke-width="2"/>
+                  <line x1="14" y1="10" x2="14" y2="60" stroke="currentColor" stroke-opacity="0.35" stroke-width="2"/>
+                  <line x1="18" y1="52" x2="74" y2="14" stroke="${hex}" stroke-width="2.2"/>
+                  <line x1="14" y1="33" x2="46" y2="33" stroke="${hex}" stroke-width="1.6" stroke-dasharray="3 2"/>
+                  <circle cx="46" cy="33" r="3" fill="${hex}"/>
+                  <text x="46" y="71" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="${hex}">½(u+v)</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Mid-Speed</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-4',
+            num: 4,
+            name: 'Distance from Speed–Time Graph',
+            extended: false,
+            paper4: 'Paper 4 Q13–Q62',
+            rawText: 's = Area under speed-time graph 1/2 b h',
+            formulaHtml: `<span class="math-expr text-base">s = Area under speed–time graph</span>`,
+            unit: 'm',
+            use: 'Calculates distance travelled using rectangle (b × h), triangle (½ × b × h), or trapezium (½(a + b)h) area.',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Shaded Area = Distance">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <polygon points="16,58 34,22 64,22 76,58" fill="${hex}" fill-opacity="0.22" stroke="${hex}" stroke-width="2"/>
+                  <line x1="14" y1="58" x2="80" y2="58" stroke="currentColor" stroke-opacity="0.4" stroke-width="2"/>
+                  <line x1="14" y1="12" x2="14" y2="58" stroke="currentColor" stroke-opacity="0.4" stroke-width="2"/>
+                  <text x="48" y="45" text-anchor="middle" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">Area=s</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Area Rule</span>
+              </div>
+            `,
+          },
+        ],
+      },
+      {
+        id: 'topic-2',
+        number: '2',
+        title: 'FORCES, MOMENTUM & PRESSURE',
+        shortTitle: '2. Forces & Momentum',
+        theme: 'indigo',
+        icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>`,
+        items: [
+          {
+            id: 'eq-5',
+            num: 5,
+            name: 'Weight',
+            extended: false,
+            paper4: null,
+            rawText: 'W = m × g',
+            formulaHtml: `<span class="math-expr text-lg">W = m × g</span>`,
+            unit: 'N',
+            use: 'Calculates gravitational force (weight) on mass (m), where g ≈ 9.8 N/kg on Earth.',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-5', 'W', 'm', 'g', hex),
+          },
+          {
+            id: 'eq-6',
+            num: 6,
+            name: 'Density',
+            extended: false,
+            paper4: null,
+            rawText: 'ρ = m / V',
+            formulaHtml: `<span class="math-expr text-lg"><span>ρ =</span><span class="frac"><span class="num">m</span><span class="den">V</span></span></span>`,
+            unit: 'kg/m³',
+            use: 'Calculates density from mass (m) and volume (V).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-6', 'm', 'ρ', 'V', hex),
+          },
+          {
+            id: 'eq-7',
+            num: 7,
+            name: 'Hooke’s Law / Spring Constant',
+            extended: true,
+            paper4: null,
+            rawText: 'F = k × x',
+            formulaHtml: `<span class="math-expr text-lg">F = k × x</span>`,
+            unit: 'N (force F) | N/m (constant k)',
+            use: 'Relates force (F) to extension/compression (x) up to the limit of proportionality (gradient of F–x graph).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-7', 'F', 'k', 'x', hex),
+          },
+          {
+            id: 'eq-8',
+            num: 8,
+            name: 'Resultant Force — Opposing Forces',
+            extended: false,
+            paper4: 'Paper 4 Q2/Q14/Q48',
+            rawText: 'F_net = F_forward - F_resistive',
+            formulaHtml: `<span class="math-expr text-base">F<sub>net</sub> = F<sub>forward</sub> − F<sub>resistive</sub></span>`,
+            unit: 'N',
+            use: 'Finds net driving force by subtracting resistive/opposing forces (friction, air resistance, or weight).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Opposing Force Vectors">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <rect x="33" y="24" width="22" height="22" rx="4" fill="${hex}" fill-opacity="0.2" stroke="${hex}" stroke-width="2"/>
+                  <path d="M57 35 H82 M77 31 L82 35 L77 39" stroke="${hex}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                  <path d="M31 35 H12 M16 31 L11 35 L16 39" stroke="currentColor" stroke-opacity="0.65" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <text x="69" y="25" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="${hex}">F_fwd</text>
+                  <text x="20" y="25" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">F_res</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Net Force</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-9',
+            num: 9,
+            name: 'Resultant Force — Newton’s Second Law',
+            extended: true,
+            paper4: null,
+            rawText: 'F = m × a',
+            formulaHtml: `<span class="math-expr text-lg">F = m × a</span>`,
+            unit: 'N',
+            use: 'Calculates net force needed to accelerate mass (m) at acceleration (a).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-9', 'F', 'm', 'a', hex),
+          },
+          {
+            id: 'eq-10',
+            num: 10,
+            name: 'Momentum',
+            extended: true,
+            paper4: null,
+            rawText: 'p = m × v',
+            formulaHtml: `<span class="math-expr text-lg">p = m × v</span>`,
+            unit: 'kg·m/s (or N·s)',
+            use: 'Calculates momentum of a moving mass (m) at velocity (v).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-10', 'p', 'm', 'v', hex),
+          },
+          {
+            id: 'eq-11',
+            num: 11,
+            name: 'Conservation of Momentum',
+            extended: true,
+            paper4: 'Paper 4 Q42',
+            rawText: 'm₁u₁ + m₂u₂ = m₁v₁ + m₂v₂',
+            formulaHtml: `<span class="math-expr text-sm sm:text-base">m₁u₁ + m₂u₂ = m₁v₁ + m₂v₂</span>`,
+            unit: 'kg·m/s',
+            use: 'Total momentum before a collision or explosion equals total momentum after (when no external force acts).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Collision / Ejection Conservation">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <circle cx="24" cy="34" r="10" fill="${hex}" fill-opacity="0.22" stroke="${hex}" stroke-width="2"/>
+                  <text x="24" y="37" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">m₁</text>
+                  <circle cx="64" cy="34" r="8" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="1.8"/>
+                  <text x="64" y="37" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">m₂</text>
+                  <path d="M36 34 H52 M48 30 L53 34 L48 38" stroke="${hex}" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <text x="44" y="62" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="${hex}">Σp_i = Σp_f</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Conserved</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-12',
+            num: 12,
+            name: 'Impulse',
+            extended: true,
+            paper4: null,
+            rawText: 'Impulse = F × Δt = mv - mu',
+            formulaHtml: `<span class="math-expr text-sm sm:text-base">Impulse = F × Δt = mv − mu</span>`,
+            unit: 'N·s',
+            use: 'Calculates impulse (change in momentum) from force (F) acting over time (Δt).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Impulse = Change in Momentum">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <rect x="34" y="18" width="20" height="32" rx="5" fill="${hex}" fill-opacity="0.18" stroke="${hex}" stroke-width="2"/>
+                  <text x="44" y="38" text-anchor="middle" font-size="11" font-family="JetBrains Mono" font-weight="700" fill="currentColor">m</text>
+                  <path d="M8 34 H28 M24 30 L29 34 L24 38" stroke="${hex}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                  <text x="18" y="24" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="${hex}">F·Δt</text>
+                  <path d="M60 34 H80 M76 30 L81 34 L76 38" stroke="currentColor" stroke-opacity="0.6" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <text x="70" y="24" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">Δp</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Impact</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-13',
+            num: 13,
+            name: 'Force from Momentum',
+            extended: true,
+            paper4: null,
+            rawText: 'F = Δp / Δt',
+            formulaHtml: `<span class="math-expr text-lg"><span>F =</span><span class="frac"><span class="num">Δp</span><span class="den">Δt</span></span></span>`,
+            unit: 'N',
+            use: 'Calculates resultant force as the rate of change of momentum (Δp).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-13', 'Δp', 'F', 'Δt', hex),
+          },
+          {
+            id: 'eq-14',
+            num: 14,
+            name: 'Pressure',
+            extended: false,
+            paper4: null,
+            rawText: 'p = F / A',
+            formulaHtml: `<span class="math-expr text-lg"><span>p =</span><span class="frac"><span class="num">F</span><span class="den">A</span></span></span>`,
+            unit: 'Pa (or N/m²)',
+            use: 'Calculates pressure exerted by a force (F) acting perpendicular to surface area (A).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-14', 'F', 'p', 'A', hex),
+          },
+          {
+            id: 'eq-15',
+            num: 15,
+            name: 'Liquid Pressure',
+            extended: true,
+            paper4: null,
+            rawText: 'Δp = ρ × g × Δh',
+            formulaHtml: `<span class="math-expr text-lg">Δp = ρ × g × Δh</span>`,
+            unit: 'Pa',
+            use: 'Calculates change in hydrostatic pressure at depth (Δh) in a fluid of density (ρ).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Hydrostatic Pressure with Depth">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <rect x="22" y="10" width="44" height="52" rx="4" fill="${hex}" fill-opacity="0.16" stroke="${hex}" stroke-width="2"/>
+                  <line x1="22" y1="22" x2="66" y2="22" stroke="${hex}" stroke-width="1.8" stroke-dasharray="3 2"/>
+                  <line x1="42" y1="22" x2="42" y2="54" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M38 26 L42 22 L46 26 M38 50 L42 54 L46 50" stroke="currentColor" stroke-width="1.6" fill="none"/>
+                  <text x="55" y="42" text-anchor="middle" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">Δh</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Depth Δh</span>
+              </div>
+            `,
+          },
+        ],
+      },
+      {
+        id: 'topic-3',
+        number: '3',
+        title: 'WORK, ENERGY & POWER (ENERGY TRANSFERS)',
+        shortTitle: '3. Work, Energy & Power',
+        theme: 'amber',
+        icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>`,
+        items: [
+          {
+            id: 'eq-16',
+            num: 16,
+            name: 'Mechanical Work Done',
+            extended: false,
+            paper4: 'Paper 4 Q43/Q58',
+            rawText: 'W = F × d ΔE = F × d',
+            formulaHtml: `<span class="math-expr text-lg"><span>W = F × d</span><span class="text-xs opacity-75 ml-1">(ΔE = F × d)</span></span>`,
+            unit: 'J (joules)',
+            use: 'Calculates mechanical work done (energy transferred) when force (F) moves an object distance (d) in the direction of the force.',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-16', 'W', 'F', 'd', hex),
+          },
+          {
+            id: 'eq-17',
+            num: 17,
+            name: 'Kinetic Energy',
+            extended: true,
+            paper4: 'Paper 4 Q9–Q62',
+            rawText: 'E_k = 1/2 × m × v²',
+            formulaHtml: `<span class="math-expr text-lg">E<sub>k</sub> = ½ × m × v²</span>`,
+            unit: 'J (joules)',
+            use: 'Calculates energy in the kinetic store of mass (m) moving at speed (v).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Quadratic Speed Dependence">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <line x1="16" y1="58" x2="76" y2="58" stroke="currentColor" stroke-opacity="0.35" stroke-width="2"/>
+                  <line x1="16" y1="12" x2="16" y2="58" stroke="currentColor" stroke-opacity="0.35" stroke-width="2"/>
+                  <path d="M18 56 Q 48 54, 72 14" fill="none" stroke="${hex}" stroke-width="2.4" stroke-linecap="round"/>
+                  <text x="10" y="20" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">Ek</text>
+                  <text x="72" y="69" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">v</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">E_k ∝ v²</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-18',
+            num: 18,
+            name: 'Gravitational Potential Energy',
+            extended: true,
+            paper4: 'Paper 4 Q9/Q21/Q62',
+            rawText: 'ΔE_p = m × g × Δh',
+            formulaHtml: `<span class="math-expr text-lg">ΔE<sub>p</sub> = m × g × Δh</span>`,
+            unit: 'J (joules)',
+            use: 'Calculates change in gravitational potential energy when mass (m) moves vertically by height (Δh).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Vertical Height Change">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <line x1="14" y1="60" x2="74" y2="60" stroke="currentColor" stroke-width="2"/>
+                  <rect x="34" y="14" width="20" height="16" rx="4" fill="${hex}" fill-opacity="0.22" stroke="${hex}" stroke-width="2"/>
+                  <text x="44" y="25" text-anchor="middle" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">m</text>
+                  <line x1="44" y1="32" x2="44" y2="58" stroke="${hex}" stroke-width="1.8" stroke-dasharray="3 2"/>
+                  <text x="58" y="48" text-anchor="middle" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="${hex}">Δh</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Height Δh</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-19',
+            num: 19,
+            name: 'Power — Rate of Energy Transfer',
+            extended: false,
+            paper4: 'Paper 4 Q4–Q60',
+            rawText: 'P = ΔE / t P = W / t ΔE = P × t kWh',
+            formulaHtml: `<span class="math-expr text-base sm:text-lg"><span>P =</span><span class="frac"><span class="num">ΔE</span><span class="den">t</span></span><span class="text-xs opacity-75 ml-1">(P = W / t)</span></span>`,
+            unit: 'W (watts, or J/s)',
+            use: 'Calculates power as energy transferred per unit time; also used for kWh (E in kWh = P in kW × t in h).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-19', 'ΔE', 'P', 't', hex),
+          },
+          {
+            id: 'eq-20',
+            num: 20,
+            name: 'Efficiency',
+            extended: false,
+            paper4: 'Paper 4 Q26/Q49/Q57',
+            rawText: 'Efficiency = (useful energy output / total energy input) × 100%',
+            formulaHtml: `<span class="math-expr text-xs sm:text-sm"><span>Efficiency =</span><span class="frac"><span class="num">useful output</span><span class="den">total input</span></span><span>× 100%</span></span>`,
+            unit: '% (or ratio)',
+            use: 'Calculates the percentage of input energy or power converted into useful output.',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Sankey Energy Split">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <path d="M10 26 H42 L68 18" fill="none" stroke="${hex}" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M42 26 Q 52 38, 64 52" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="3 2"/>
+                  <text x="24" y="18" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">In</text>
+                  <text x="72" y="14" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="${hex}">Useful</text>
+                  <text x="66" y="64" text-anchor="middle" font-size="8" font-family="JetBrains Mono" font-weight="700" fill="currentColor">Waste</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Sankey</span>
+              </div>
+            `,
+          },
+        ],
+      },
+      {
+        id: 'topic-4',
+        number: '4',
+        title: 'TURNING EFFECTS',
+        shortTitle: '4. Turning Effects',
+        theme: 'teal',
+        icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>`,
+        items: [
+          {
+            id: 'eq-21',
+            num: 21,
+            name: 'Moment of a Force',
+            extended: false,
+            paper4: null,
+            rawText: 'Moment = F × d',
+            formulaHtml: `<span class="math-expr text-lg">Moment = F × d</span>`,
+            unit: 'N·m',
+            use: 'Calculates turning effect of force (F) at perpendicular distance (d) from a pivot.',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-21', 'M', 'F', 'd', hex),
+          },
+          {
+            id: 'eq-22',
+            num: 22,
+            name: 'Principle of Moments',
+            extended: false,
+            paper4: null,
+            rawText: 'Total clockwise moments = Total anticlockwise moments',
+            formulaHtml: `<span class="math-expr text-sm sm:text-base leading-snug">Total clockwise moments = Total anticlockwise moments</span>`,
+            unit: 'N·m',
+            use: 'Condition for rotational equilibrium (no net turning effect).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Balanced Equilibrium">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <line x1="10" y1="36" x2="78" y2="36" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                  <polygon points="44,38 36,56 52,56" fill="${hex}"/>
+                  <path d="M16 16 V31 M12 27 L16 32 L20 27" stroke="${hex}" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <path d="M72 16 V31 M68 27 L72 32 L76 27" stroke="${hex}" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <text x="16" y="13" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">ACW</text>
+                  <text x="72" y="13" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">CW</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Equilibrium</span>
+              </div>
+            `,
+          },
+        ],
+      },
+      {
+        id: 'topic-5',
+        number: '5',
+        title: 'THERMAL PHYSICS & PARTICLE MODEL',
+        shortTitle: '5. Thermal Physics',
+        theme: 'rose',
+        icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/></svg>`,
+        items: [
+          {
+            id: 'eq-23',
+            num: 23,
+            name: 'Kelvin Temperature Conversion',
+            extended: false,
+            paper4: null,
+            rawText: 'T = θ + 273',
+            formulaHtml: `<span class="math-expr text-lg">T = θ + 273</span>`,
+            unit: 'K (kelvin)',
+            use: 'Converts Celsius temperature (θ) to absolute temperature in kelvin (T).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Absolute Temperature Scale">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <rect x="38" y="8" width="12" height="42" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="44" cy="52" r="8" fill="${hex}"/>
+                  <rect x="41" y="24" width="6" height="24" fill="${hex}"/>
+                  <text x="20" y="28" text-anchor="middle" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">°C</text>
+                  <text x="68" y="28" text-anchor="middle" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="${hex}">K</text>
+                  <text x="44" y="71" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">+273</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">0 K = −273°C</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-24',
+            num: 24,
+            name: 'Boyle’s Law',
+            extended: true,
+            paper4: null,
+            rawText: 'p₁ × V₁ = p₂ × V₂',
+            formulaHtml: `<span class="math-expr text-lg">p₁ × V₁ = p₂ × V₂</span>`,
+            unit: 'Pa (pressure) | m³ (volume)',
+            use: 'Relates pressure and volume of a fixed mass of gas at constant temperature.',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Inverse Pressure-Volume">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <line x1="16" y1="58" x2="76" y2="58" stroke="currentColor" stroke-opacity="0.35" stroke-width="2"/>
+                  <line x1="16" y1="12" x2="16" y2="58" stroke="currentColor" stroke-opacity="0.35" stroke-width="2"/>
+                  <path d="M22 16 Q 30 46, 72 52" fill="none" stroke="${hex}" stroke-width="2.4" stroke-linecap="round"/>
+                  <text x="10" y="20" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">p</text>
+                  <text x="70" y="70" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">V</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">p ∝ 1/V</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-25',
+            num: 25,
+            name: 'Specific Heat Capacity',
+            extended: true,
+            paper4: null,
+            rawText: 'c = ΔE / (m × Δθ) ΔE = m × c × Δθ',
+            formulaHtml: `<span class="math-expr text-base"><span>c =</span><span class="frac"><span class="num">ΔE</span><span class="den">m × Δθ</span></span><span class="text-xs opacity-75 ml-1">[ΔE = mcΔθ]</span></span>`,
+            unit: 'J/(kg·°C) or J/(kg·K)',
+            use: 'Calculates thermal energy (ΔE) needed to change temperature of mass (m) by Δθ.',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Thermal Energy Storage">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <rect x="22" y="14" width="44" height="28" rx="5" fill="${hex}" fill-opacity="0.18" stroke="${hex}" stroke-width="2"/>
+                  <text x="44" y="32" text-anchor="middle" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">m · c</text>
+                  <path d="M32 58 Q35 51 32 46 M44 58 Q47 51 44 46 M56 58 Q59 51 56 46" stroke="${hex}" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <text x="44" y="70" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="${hex}">+ΔE → +Δθ</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Heat ΔE</span>
+              </div>
+            `,
+          },
+          {
+            id: 'concept-26',
+            num: 26,
+            isConceptual: true,
+            name: 'Thermal Energy Transfers',
+            extended: false,
+            paper4: null,
+            rawText: 'Conduction Convection Infrared Radiation dull black shiny white silver',
+            formulaHtml: `<span class="math-expr text-sm">Conduction • Convection • Radiation</span>`,
+            unit: 'Conceptual Topic',
+            use: 'Conduction (lattice vibrations + free electrons in metals), Convection (density changes in fluids), and Infrared Radiation (dull black = best emitter/absorber; shiny white/silver = best reflector).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Three Heat Transfer Mechanisms">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <path d="M16 48 V22 M12 26 L16 21 L20 26" stroke="${hex}" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <circle cx="44" cy="35" r="4" fill="${hex}"/>
+                  <circle cx="44" cy="21" r="3" fill="currentColor" fill-opacity="0.5"/>
+                  <circle cx="44" cy="49" r="3" fill="currentColor" fill-opacity="0.5"/>
+                  <path d="M64 24 Q70 28 64 32 Q70 36 64 40 Q70 44 64 48" stroke="${hex}" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  <text x="44" y="68" text-anchor="middle" font-size="8.5" font-family="JetBrains Mono" font-weight="700" fill="currentColor">No Formula</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Conceptual</span>
+              </div>
+            `,
+          },
+        ],
+      },
+      {
+        id: 'topic-6',
+        number: '6',
+        title: 'WAVES & ELECTROMAGNETIC SPECTRUM',
+        shortTitle: '6. Waves & EM',
+        theme: 'sky',
+        icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12c2.5-5 5 5 7.5 0s5 5 7.5 0 3 2.5 3 2.5"/></svg>`,
+        items: [
+          {
+            id: 'eq-27',
+            num: 27,
+            name: 'Wave Speed Equation',
+            extended: false,
+            paper4: 'Paper 4 Q7/Q29',
+            rawText: 'v = f × λ c = f × λ',
+            formulaHtml: `<span class="math-expr text-lg"><span>v = f × λ</span><span class="text-xs opacity-75 ml-1">(c = f × λ)</span></span>`,
+            unit: 'm/s',
+            use: 'Relates wave speed (v) to frequency (f) and wavelength (λ), including electromagnetic waves in vacuum (c = 3.0 × 10⁸ m/s).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-27', 'v', 'f', 'λ', hex),
+          },
+        ],
+      },
+      {
+        id: 'topic-7',
+        number: '7',
+        title: 'ELECTRICITY & CIRCUITS',
+        shortTitle: '7. Electricity',
+        theme: 'emerald',
+        icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`,
+        items: [
+          {
+            id: 'eq-28',
+            num: 28,
+            name: 'Electric Current',
+            extended: false,
+            paper4: null,
+            rawText: 'I = Q / t',
+            formulaHtml: `<span class="math-expr text-lg"><span>I =</span><span class="frac"><span class="num">Q</span><span class="den">t</span></span></span>`,
+            unit: 'A (amperes)',
+            use: 'Calculates current as rate of flow of electric charge (Q) per unit time (t).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-28', 'Q', 'I', 't', hex),
+          },
+          {
+            id: 'eq-29',
+            num: 29,
+            name: 'Electromotive Force — e.m.f.',
+            extended: false,
+            paper4: null,
+            rawText: 'E = W / Q',
+            formulaHtml: `<span class="math-expr text-lg"><span>E =</span><span class="frac"><span class="num">W</span><span class="den">Q</span></span></span>`,
+            unit: 'V (volts, or J/C)',
+            use: 'Calculates electrical work done (W) by a source in driving unit charge (Q) around a complete circuit.',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-29', 'W', 'E', 'Q', hex),
+          },
+          {
+            id: 'eq-30',
+            num: 30,
+            name: 'Potential Difference — p.d.',
+            extended: false,
+            paper4: null,
+            rawText: 'V = W / Q',
+            formulaHtml: `<span class="math-expr text-lg"><span>V =</span><span class="frac"><span class="num">W</span><span class="den">Q</span></span></span>`,
+            unit: 'V (volts, or J/C)',
+            use: 'Calculates work done (W) per unit charge (Q) passing through a component.',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-30', 'W', 'V', 'Q', hex),
+          },
+          {
+            id: 'eq-31',
+            num: 31,
+            name: 'Resistance',
+            extended: false,
+            paper4: null,
+            rawText: 'R = V / I',
+            formulaHtml: `<span class="math-expr text-lg"><span>R =</span><span class="frac"><span class="num">V</span><span class="den">I</span></span></span>`,
+            unit: 'Ω (ohms)',
+            use: 'Calculates resistance from potential difference (V) across a component and current (I) through it.',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-31', 'V', 'I', 'R', hex),
+          },
+          {
+            id: 'eq-32',
+            num: 32,
+            name: 'Resistance of a Wire',
+            extended: true,
+            paper4: null,
+            rawText: 'R₁ / R₂ = (l₁ × A₂) / (l₂ × A₁)',
+            formulaHtml: `<span class="math-expr text-base"><span class="frac"><span class="num">R₁</span><span class="den">R₂</span></span><span>=</span><span class="frac"><span class="num">l₁ × A₂</span><span class="den">l₂ × A₁</span></span></span>`,
+            unit: 'Ω (ohms)',
+            use: 'Relates resistance of a uniform wire directly to length (l) and inversely to cross-sectional area (A).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Wire Length & Cross-Sectional Area">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <ellipse cx="18" cy="36" rx="6" ry="13" fill="${hex}" fill-opacity="0.24" stroke="${hex}" stroke-width="2"/>
+                  <line x1="18" y1="23" x2="70" y2="23" stroke="${hex}" stroke-width="2"/>
+                  <line x1="18" y1="49" x2="70" y2="49" stroke="${hex}" stroke-width="2"/>
+                  <path d="M70 23 A6 13 0 0 1 70 49" fill="none" stroke="${hex}" stroke-width="2"/>
+                  <text x="44" y="16" text-anchor="middle" font-size="9.5" font-family="JetBrains Mono" font-weight="700" fill="currentColor">R ∝ l</text>
+                  <text x="44" y="65" text-anchor="middle" font-size="9.5" font-family="JetBrains Mono" font-weight="700" fill="currentColor">R ∝ 1/A</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Wire R</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-33',
+            num: 33,
+            name: 'Resistors in Series',
+            extended: false,
+            paper4: 'Paper 4 Q6–Q51',
+            rawText: 'R_total = R₁ + R₂ + ... V = V₁ + V₂',
+            formulaHtml: `<span class="math-expr text-base sm:text-lg">R<sub>total</sub> = R₁ + R₂ + …</span>`,
+            unit: 'Ω (ohms)',
+            use: 'Combined resistance of series resistors; current is identical everywhere and source e.m.f. splits across components (V = V₁ + V₂).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Series Resistor Chain">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <line x1="6" y1="36" x2="18" y2="36" stroke="currentColor" stroke-width="2"/>
+                  <rect x="18" y="28" width="20" height="16" rx="2" fill="${hex}" fill-opacity="0.2" stroke="${hex}" stroke-width="2"/>
+                  <line x1="38" y1="36" x2="50" y2="36" stroke="currentColor" stroke-width="2"/>
+                  <rect x="50" y="28" width="20" height="16" rx="2" fill="${hex}" fill-opacity="0.2" stroke="${hex}" stroke-width="2"/>
+                  <line x1="70" y1="36" x2="82" y2="36" stroke="currentColor" stroke-width="2"/>
+                  <text x="28" y="22" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">R₁</text>
+                  <text x="60" y="22" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">R₂</text>
+                  <text x="44" y="62" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="${hex}">I same</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Series</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-34',
+            num: 34,
+            name: 'Resistors in Parallel',
+            extended: true,
+            paper4: 'Paper 4 Q34–Q65',
+            rawText: '1 / R_total = 1 / R₁ + 1 / R₂ I = I₁ + I₂',
+            formulaHtml: `<span class="math-expr text-base"><span class="frac"><span class="num">1</span><span class="den">R<sub>total</sub></span></span><span>=</span><span class="frac"><span class="num">1</span><span class="den">R₁</span></span><span>+</span><span class="frac"><span class="num">1</span><span class="den">R₂</span></span></span>`,
+            unit: 'Ω (ohms)',
+            use: 'Combined resistance of parallel branches (always less than the smallest resistor); branch currents sum (I = I₁ + I₂) and p.d. across each branch is equal.',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Parallel Resistor Branches">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <path d="M10 36 H22 M22 20 V52 M66 20 V52 M66 36 H78" stroke="currentColor" stroke-width="2" fill="none"/>
+                  <line x1="22" y1="20" x2="32" y2="20" stroke="currentColor" stroke-width="2"/>
+                  <rect x="32" y="13" width="24" height="14" rx="2" fill="${hex}" fill-opacity="0.2" stroke="${hex}" stroke-width="2"/>
+                  <line x1="56" y1="20" x2="66" y2="20" stroke="currentColor" stroke-width="2"/>
+                  <line x1="22" y1="52" x2="32" y2="52" stroke="currentColor" stroke-width="2"/>
+                  <rect x="32" y="45" width="24" height="14" rx="2" fill="${hex}" fill-opacity="0.2" stroke="${hex}" stroke-width="2"/>
+                  <line x1="56" y1="52" x2="66" y2="52" stroke="currentColor" stroke-width="2"/>
+                  <text x="44" y="23" text-anchor="middle" font-size="8.5" font-family="JetBrains Mono" font-weight="700" fill="currentColor">R₁</text>
+                  <text x="44" y="55" text-anchor="middle" font-size="8.5" font-family="JetBrains Mono" font-weight="700" fill="currentColor">R₂</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">V same</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-35',
+            num: 35,
+            name: 'Potential Divider Equation',
+            extended: true,
+            paper4: 'Paper 4 Q23/Q28/Q65',
+            rawText: 'V₁ / V₂ = R₁ / R₂ V_out = V_in × R₂ / (R₁ + R₂)',
+            formulaHtml: `<span class="math-expr text-sm sm:text-base"><span class="frac"><span class="num">V₁</span><span class="den">V₂</span></span><span>=</span><span class="frac"><span class="num">R₁</span><span class="den">R₂</span></span><span class="text-xs opacity-80 ml-1">[V<sub>out</sub> = V<sub>in</sub><span class="frac"><span class="num">R₂</span><span class="den">R₁+R₂</span></span>]</span></span>`,
+            unit: 'V (volts)',
+            use: 'Calculates how supply voltage splits between series resistors (such as thermistors or LDRs) in proportion to their resistances.',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Voltage Ratio Split">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <line x1="28" y1="8" x2="28" y2="16" stroke="currentColor" stroke-width="2"/>
+                  <rect x="20" y="16" width="16" height="18" rx="2" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="1.8"/>
+                  <line x1="28" y1="34" x2="28" y2="42" stroke="currentColor" stroke-width="2"/>
+                  <rect x="20" y="42" width="16" height="18" rx="2" fill="${hex}" fill-opacity="0.24" stroke="${hex}" stroke-width="2"/>
+                  <line x1="28" y1="60" x2="28" y2="68" stroke="currentColor" stroke-width="2"/>
+                  <path d="M28 38 H56 V64 H28" fill="none" stroke="${hex}" stroke-width="1.6" stroke-dasharray="2 2"/>
+                  <circle cx="56" cy="51" r="8" fill="none" stroke="${hex}" stroke-width="1.8"/>
+                  <text x="56" y="54" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="${hex}">V₂</text>
+                  <text x="28" y="28" text-anchor="middle" font-size="8" font-family="JetBrains Mono" font-weight="700" fill="currentColor">R₁</text>
+                  <text x="28" y="54" text-anchor="middle" font-size="8" font-family="JetBrains Mono" font-weight="700" fill="currentColor">R₂</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Divider</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-36',
+            num: 36,
+            name: 'Electrical Power',
+            extended: false,
+            paper4: null,
+            rawText: 'P = I × V',
+            formulaHtml: `<span class="math-expr text-lg">P = I × V</span>`,
+            unit: 'W (watts)',
+            use: 'Calculates rate of electrical energy transfer from current (I) and p.d. (V).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-36', 'P', 'I', 'V', hex),
+          },
+          {
+            id: 'eq-37',
+            num: 37,
+            name: 'Electrical Energy',
+            extended: false,
+            paper4: null,
+            rawText: 'E = I × V × t',
+            formulaHtml: `<span class="math-expr text-lg">E = I × V × t</span>`,
+            unit: 'J (joules)',
+            use: 'Calculates total electrical energy transferred over time (t in seconds).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Electrical Power × Time">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <rect x="16" y="16" width="56" height="34" rx="8" fill="${hex}" fill-opacity="0.16" stroke="${hex}" stroke-width="2"/>
+                  <text x="44" y="37" text-anchor="middle" font-size="11" font-family="JetBrains Mono" font-weight="700" fill="currentColor">P × t</text>
+                  <text x="44" y="66" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="${hex}">E = (IV)·t</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Energy</span>
+              </div>
+            `,
+          },
+        ],
+      },
+      {
+        id: 'topic-8',
+        number: '8',
+        title: 'SPACE PHYSICS (SOLAR SYSTEM & UNIVERSE)',
+        shortTitle: '8. Space Physics',
+        theme: 'violet',
+        icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-25 12 12)"/></svg>`,
+        items: [
+          {
+            id: 'eq-38',
+            num: 38,
+            name: 'Orbital Speed',
+            extended: true,
+            paper4: null,
+            rawText: 'v = (2 × π × r) / T',
+            formulaHtml: `<span class="math-expr text-lg"><span>v =</span><span class="frac"><span class="num">2 × π × r</span><span class="den">T</span></span></span>`,
+            unit: 'm/s',
+            use: 'Calculates average orbital speed from average orbital radius (r) and orbital period (T).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Circular Orbit Circumference">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <circle cx="44" cy="34" r="22" fill="none" stroke="${hex}" stroke-width="2" stroke-dasharray="4 2"/>
+                  <circle cx="44" cy="34" r="5.5" fill="${hex}"/>
+                  <line x1="44" y1="34" x2="66" y2="34" stroke="currentColor" stroke-width="1.6"/>
+                  <circle cx="66" cy="34" r="3" fill="currentColor"/>
+                  <text x="55" y="30" text-anchor="middle" font-size="10" font-family="JetBrains Mono" font-weight="700" fill="currentColor">r</text>
+                  <text x="44" y="69" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="${hex}">C = 2πr</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Orbit</span>
+              </div>
+            `,
+          },
+          {
+            id: 'eq-39',
+            num: 39,
+            name: 'Hubble Constant',
+            extended: true,
+            paper4: null,
+            rawText: 'H₀ = v / d',
+            formulaHtml: `<span class="math-expr text-lg"><span>H₀ =</span><span class="frac"><span class="num">v</span><span class="den">d</span></span></span>`,
+            unit: 's⁻¹ (per second)',
+            use: 'Relates a galaxy\'s recession speed (v) to its distance from Earth (d) (gradient of v–d graph).',
+            visualHtml: (hex) => makeInteractiveTriangle('eq-39', 'v', 'H₀', 'd', hex),
+          },
+          {
+            id: 'eq-40',
+            num: 40,
+            name: 'Age of the Universe',
+            extended: true,
+            paper4: null,
+            rawText: 't = d / v = 1 / H₀',
+            formulaHtml: `<span class="math-expr text-lg"><span>t =</span><span class="frac"><span class="num">d</span><span class="den">v</span></span><span>=</span><span class="frac"><span class="num">1</span><span class="den">H₀</span></span></span>`,
+            unit: 's (seconds)',
+            use: 'Estimates the age of the universe from the reciprocal of the Hubble constant (≈ 2.2 × 10⁻¹⁸ s⁻¹).',
+            visualHtml: (hex) => `
+              <div class="flex flex-col items-center shrink-0" title="Cosmic Expansion Reciprocal">
+                <svg width="82" height="68" viewBox="0 0 88 74">
+                  <circle cx="44" cy="34" r="4" fill="${hex}"/>
+                  <path d="M44 24 V11 M40 15 L44 10 L48 15" stroke="${hex}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                  <path d="M54 34 H69 M65 30 L70 34 L65 38" stroke="${hex}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                  <path d="M34 34 H19 M23 30 L18 34 L23 38" stroke="${hex}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                  <path d="M44 44 V57 M40 53 L44 58 L48 53" stroke="${hex}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                  <text x="44" y="70" text-anchor="middle" font-size="9" font-family="JetBrains Mono" font-weight="700" fill="currentColor">t ≈ 1/H₀</text>
+                </svg>
+                <span class="text-[10px] font-mono font-semibold text-slate-400 dark:text-slate-500 mt-0.5">Expansion</span>
+              </div>
+            `,
+          },
+        ],
+      },
+    ];
+
+    // Application State
+    let state = {
+      filter: 'all', // 'all' | 'core' | 'extended' | 'paper4'
+      search: '',
+      studyMode: false,
+      revealedIds: new Set(),
+    };
+
+    // DOM Elements
+    const topicsContainer = document.getElementById('topicsContainer');
+    const topicNav = document.getElementById('topicNav');
+    const emptyState = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearch');
+    const studyModeToggle = document.getElementById('studyModeToggle');
+    const studyModeText = document.getElementById('studyModeText');
+    const studyBanner = document.getElementById('studyBanner');
+    const eyeOffIcon = document.getElementById('eyeOffIcon');
+    const eyeOnIcon = document.getElementById('eyeOnIcon');
+
+    /**
+     * Renders the horizontal Topic Quick-Jump pill bar.
+     */
+    function renderTopicNav() {
+      topicNav.innerHTML = SYLLABUS_TOPICS.map((topic) => {
+        const theme = THEME_STYLES[topic.theme];
+        return `
+          <a href="#${topic.id}"
+             class="ui-pill inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700">
+            <span class="w-2 h-2 rounded-full ${theme.dot}"></span>
+            <span>${topic.shortTitle}</span>
+          </a>
+        `;
+      }).join('');
+    }
+
+    /**
+     * Checks if a card matches active tier filter and search query.
+     */
+    function matchesFilters(item, topic) {
+      if (state.filter === 'core' && item.extended) return false;
+      if (state.filter === 'extended' && !item.extended) return false;
+      if (state.filter === 'paper4' && !item.paper4) return false;
+
+      if (state.search.trim() !== '') {
+        const q = state.search.toLowerCase().trim();
+        const haystack = [
+          `#${item.num}`,
+          item.name,
+          item.rawText,
+          item.unit,
+          item.use,
+          topic.title,
+          item.extended ? 'extended (e)' : 'core',
+          item.paper4 || '',
+        ]
+          .join(' ')
+          .toLowerCase();
+        return haystack.includes(q);
+      }
+      return true;
+    }
+
+    /**
+     * Renders all matching topics and equation cards with balanced flex alignment.
+     */
+    function renderDashboard() {
+      let totalVisibleSections = 0;
+
+      const html = SYLLABUS_TOPICS.map((topic) => {
+        const theme = THEME_STYLES[topic.theme];
+        const filteredItems = topic.items.filter((item) => matchesFilters(item, topic));
+
+        if (filteredItems.length === 0) return '';
+        totalVisibleSections++;
+
+        const eqCount = filteredItems.filter((i) => !i.isConceptual).length;
+        const conceptCount = filteredItems.filter((i) => i.isConceptual).length;
+        const countLabel = [
+          eqCount > 0 ? `${eqCount} ${eqCount === 1 ? 'Equation' : 'Equations'}` : '',
+          conceptCount > 0 ? `${conceptCount} Conceptual` : '',
+        ]
+          .filter(Boolean)
+          .join(' • ');
+
+        return `
+          <section id="${topic.id}" class="scroll-mt-36">
+            <!-- Section Header -->
+            <div class="flex items-center justify-between gap-3 mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl ${theme.iconBg} flex items-center justify-center shrink-0">
+                  ${topic.icon}
+                </div>
+                <div>
+                  <h2 class="text-base sm:text-lg font-extrabold tracking-tight text-slate-900 dark:text-white">
+                    TOPIC ${topic.number}: ${topic.title}
+                  </h2>
+                  <p class="text-xs font-medium text-slate-500 dark:text-slate-400">
+                    ${countLabel}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Balanced Stretch Card Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 items-stretch">
+              ${filteredItems
+                .map((item) => {
+                  const isRevealed = state.revealedIds.has(item.id);
+                  const studyClasses = state.studyMode
+                    ? isRevealed
+                      ? 'study-revealed cursor-pointer'
+                      : 'study-masked cursor-pointer'
+                    : '';
+
+                  return `
+                    <article
+                      onclick="toggleCardReveal('${item.id}')"
+                      class="equation-card group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 border-t-4 ${theme.borderTop} p-5 shadow-sm hover:shadow-md flex flex-col justify-between h-full ${studyClasses}">
+                      <div>
+                        <!-- Card Header: Index, Title & Tier Badges -->
+                        <div class="flex items-start justify-between gap-2.5 mb-3.5">
+                          <div class="flex items-baseline gap-2">
+                            <span class="text-xs font-mono font-bold text-slate-400 dark:text-slate-500 shrink-0">
+                              ${String(item.num).padStart(2, '0')}.
+                            </span>
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white leading-snug">
+                              ${item.name}
+                            </h3>
+                          </div>
+
+                          <div class="flex flex-col items-end gap-1 shrink-0">
+                            ${
+                              item.extended
+                                ? `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300 border border-purple-200 dark:border-purple-700">
+                                    EXTENDED (E)
+                                  </span>`
+                                : `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">
+                                    CORE
+                                  </span>`
+                            }
+                            ${
+                              item.paper4
+                                ? `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-sky-100 text-sky-800 dark:bg-sky-900/50 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
+                                    ${item.paper4}
+                                  </span>`
+                                : ''
+                            }
+                          </div>
+                        </div>
+
+                        <!-- Formula Box + Interactive Triangle / Physics Diagram -->
+                        <div class="relative rounded-xl ${theme.formulaBg} border ${theme.badgeBorder} p-3.5 mb-4 flex items-center justify-between gap-3 min-h-[100px]">
+                          <div class="formula-content ${theme.formulaText} flex-1 overflow-x-auto no-scrollbar">
+                            ${item.formulaHtml}
+                          </div>
+
+                          <div class="formula-content text-slate-700 dark:text-slate-300">
+                            ${item.visualHtml(theme.accentHex)}
+                          </div>
+
+                          <!-- Study Mode Overlay -->
+                          <div class="study-overlay opacity-0 pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-white/45 dark:bg-slate-950/45 backdrop-blur-[1px]">
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-bold shadow-sm">
+                              Hover or Tap to Reveal
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Pinned Bottom Footer: SI Unit Pill & Practical Use -->
+                      <div class="space-y-2.5 pt-2 border-t border-slate-100 dark:border-slate-800/80 mt-auto">
+                        <div class="flex items-start gap-2">
+                          <span class="shrink-0 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mt-0.5">
+                            ${item.isConceptual ? 'Type' : 'SI Unit'}
+                          </span>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-mono font-semibold bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700">
+                            ${item.unit}
+                          </span>
+                        </div>
+
+                        <p class="text-xs sm:text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                          <span class="font-semibold text-slate-700 dark:text-slate-300">Use:</span> ${item.use}
+                        </p>
+                      </div>
+                    </article>
+                  `;
+                })
+                .join('')}
+            </div>
+          </section>
+        `;
+      }).join('');
+
+      topicsContainer.innerHTML = html;
+      emptyState.classList.toggle('hidden', totalVisibleSections !== 0);
+    }
+
+    /**
+     * Toggles locked reveal state for an equation card during Study Mode.
+     */
+    window.toggleCardReveal = function (itemId) {
+      if (!state.studyMode) return;
+      if (state.revealedIds.has(itemId)) {
+        state.revealedIds.delete(itemId);
+      } else {
+        state.revealedIds.add(itemId);
+      }
+      renderDashboard();
+    };
+
+    // Event Listeners: Filter Pills
+    document.querySelectorAll('.filter-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach((b) => {
+          b.classList.remove('active', 'bg-white', 'dark:bg-slate-700', 'text-slate-900', 'dark:text-white', 'shadow-sm');
+          b.classList.add('text-slate-600', 'dark:text-slate-300');
+        });
+        btn.classList.add('active', 'bg-white', 'dark:bg-slate-700', 'text-slate-900', 'dark:text-white', 'shadow-sm');
+        btn.classList.remove('text-slate-600', 'dark:text-slate-300');
+
+        state.filter = btn.dataset.filter;
+        renderDashboard();
+      });
+    });
+
+    // Event Listeners: Search Input
+    searchInput.addEventListener('input', (e) => {
+      state.search = e.target.value;
+      clearSearchBtn.classList.toggle('hidden', state.search === '');
+      renderDashboard();
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      state.search = '';
+      searchInput.value = '';
+      clearSearchBtn.classList.add('hidden');
+      renderDashboard();
+    });
+
+    document.getElementById('resetAllFilters').addEventListener('click', () => {
+      state.filter = 'all';
+      state.search = '';
+      searchInput.value = '';
+      clearSearchBtn.classList.add('hidden');
+      document.querySelector('[data-filter="all"]').click();
+    });
+
+    // Event Listener: Study Mode Toggle
+    studyModeToggle.addEventListener('click', () => {
+      state.studyMode = !state.studyMode;
+      state.revealedIds.clear();
+
+      if (state.studyMode) {
+        studyModeText.textContent = 'Study Mode: On';
+        studyBanner.classList.remove('hidden');
+        eyeOffIcon.classList.add('hidden');
+        eyeOnIcon.classList.remove('hidden');
+        studyModeToggle.classList.add('ring-2', 'ring-amber-400');
+      } else {
+        studyModeText.textContent = 'Study Mode: Off';
+        studyBanner.classList.add('hidden');
+        eyeOffIcon.classList.remove('hidden');
+        eyeOnIcon.classList.add('hidden');
+        studyModeToggle.classList.remove('ring-2', 'ring-amber-400');
+      }
+      renderDashboard();
+    });
+
+    document.getElementById('resetPeeksBtn').addEventListener('click', () => {
+      state.revealedIds.clear();
+      renderDashboard();
+    });
+
+    // Event Listener: Light / Dark Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      themeLabel.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+    });
+
+    // Initial Render
+    renderTopicNav();
+    renderDashboard();
+  </script>
+</body>
+</html>
